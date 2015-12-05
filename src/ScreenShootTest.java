@@ -134,7 +134,7 @@ public class ScreenShootTest {
                 .append("</th>");
 
         System.out.println("Physical Number of Rows:" + (sheet1.getPhysicalNumberOfRows()-1));
-        for (int i = 1; i < sheet1.getPhysicalNumberOfRows()-1; i++) {
+        for (int i = 1; i < 30; i++) {
 
             ID = sheet1.getRow(i).getCell(1).getStringCellValue();
             long startTime = System.currentTimeMillis();
@@ -265,7 +265,7 @@ public class ScreenShootTest {
 
     public static Properties loadProp() throws IOException {
 
-        File file = new File("C:\\Users\\~206109371\\Documents\\My Downloads\\java1\\src\\screenConfig.prop");
+        File file = new File("/home/fortegs/IdeaProjects/AdTest/src/screenConfig.prop");
         FileInputStream fileInput = new FileInputStream(file);
         Properties prop = new Properties();
         prop.load(fileInput);
@@ -291,7 +291,7 @@ public class ScreenShootTest {
     @AfterClass
     public static void tearDown() throws IOException {
 
-        BufferedWriter bwr = new BufferedWriter(new FileWriter(new File("C:\\Users\\206436732\\Results\\stg-ec02\\results.html")));
+        BufferedWriter bwr = new BufferedWriter(new FileWriter(new File("/home/fortegs/IdeaProjects/AdTest/src/results.html")));
         bwr.write(result.toString());
         bwr.flush();
         bwr.close();
