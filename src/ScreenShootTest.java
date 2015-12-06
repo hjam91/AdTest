@@ -219,9 +219,9 @@ public class ScreenShootTest {
         result.append("<tr>")
                 .append("<td> Total </td>")
                 .append("<td> Results </td>")
-                .append("<td>" +(int)(countPassAd1/(countFailAd1+countPassAd1) *100) + "% </td>")
-                .append("<td>" + (int) (countPassAd2 / (countFailAd2 + countPassAd2) * 100) + "% </td>")
-                .append("<td>" + (int)(countPassAd3 / (countFailAd2 + countPassAd3) *100) + "% </td>")
+                .append("<td><b>" +(int)(countPassAd1/(countFailAd1+countPassAd1) *100) + "% </b></td>")
+                .append("<td><b>" + (int) (countPassAd2 / (countFailAd2 + countPassAd2) * 100) + "% </b></td>")
+                .append("<td><b>" + (int)(countPassAd3 / (countFailAd2 + countPassAd3) *100) + "% </b></td>")
                 .append("</tr>");
 
 

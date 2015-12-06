@@ -5,5 +5,5 @@ testDataLocation=/home/fortegs/IdeaProjects/AdTest/src/NewsID.xlsx
 testDataLocationResults=/home/fortegs/IdeaProjects/java1/src/NewsIDResults.xlsx
 chromeDriverLocation= /home/fortegs/IdeaProjects/AdTest/src/chromedriver
 IEDriverLocation=
-ScreenshotLocation=/home/fortegs/IdeaProjects/AdTest/src/Results
+ScreenshotLocation=/home/fortegs/Results/
 phantomDriverLocation=/home/fortegs/IdeaProjects/AdTest/src/phantomjs
