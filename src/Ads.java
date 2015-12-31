@@ -19,6 +19,9 @@ public class Ads {
     @FindBy(id = "dart_wrapper_Flex_Ad_First")
     WebElement x300;
 
+    @FindBy(id = "prtnr_mod_upsell")
+    WebElement xfinityUpsell;
+
     @FindBy(id="pmtracker")
     WebElement perfectMarketAd;
 
@@ -28,10 +31,20 @@ public class Ads {
     @FindBy(id="ad-com-rightrail-bottom")
     WebElement topBannerInter;
 
+    @FindBy(id="dart_wrapper_Badge_A")
+    WebElement badge_A;
+
+    @FindBy(partialLinkText = "Switch to mobile view")
+    WebElement swtichDevices;
+
     Ads(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
+
+    public WebElement getSwtichDevices(){ return swtichDevices;}
+
+    public WebElement getBadge_A(){ return badge_A;}
 
     public WebElement getMarketsAdFrame(){ return MarketsAdFrame;}
 
@@ -48,6 +61,11 @@ public class Ads {
     public WebElement getTopBannerInter(){
         return topBannerInter;
     }
+
+    public WebElement getXfinityUpsell(){
+        return xfinityUpsell;
+    }
+
 
 
 }
