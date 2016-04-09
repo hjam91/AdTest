@@ -37,10 +37,15 @@ public class Ads {
     @FindBy(partialLinkText = "Switch to mobile view")
     WebElement swtichDevices;
 
+    @FindBy(id="footer-logo")
+    WebElement footerLogo;
+
     Ads(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
+
+    public WebElement getFooterLogo(){ return footerLogo;}
 
     public WebElement getSwtichDevices(){ return swtichDevices;}
 

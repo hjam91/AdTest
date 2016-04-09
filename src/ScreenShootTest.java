@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by chrx on 11/20/15.
  */
-public class screenShotTest {
+public class ScreenShootTest {
 
     static WebDriver driver;
     static String URL ;
@@ -38,12 +38,16 @@ public class screenShotTest {
 
 
 
-    @BeforeClass
+
     public static void setUp() throws IOException, InterruptedException {
 
         prop = loadProp();
         URL = prop.getProperty("URL");
         String BROWSER = prop.getProperty("browser");
+
+        if (new File(prop.getProperty("results")).exists()){
+            new File(prop.getProperty("results")).delete();
+        }
 
 
         if(BROWSER.equals("phantom")){
@@ -51,6 +55,7 @@ public class screenShotTest {
             caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
                     prop.getProperty("phantomDriverLocation"));
             driver = new PhantomJSDriver(caps);
+            driver.manage().window().setSize(new Dimension(1920, 1080));
         }
 
         else if (BROWSER.equals("chrome")) {
@@ -60,7 +65,7 @@ public class screenShotTest {
 
         } else if (BROWSER.equals("IE")) {
 
-            System.setProperty("webdriver.ie.driver", "C:\\Users\\206436732\\IEDriverServer.exe");
+            System.setProperty("webdriver.ie.driver", "IEDriverServer.exe");
             DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
             caps.setCapability("ignoreZoomSetting", true);
             driver = new InternetExplorerDriver(caps);
@@ -74,7 +79,11 @@ public class screenShotTest {
         driver.manage().timeouts().implicitlyWait(2000, TimeUnit.MILLISECONDS);
         //driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 
-        driver.manage().window().maximize();
+        if((!BROWSER.equals("phantom"))){
+
+            driver.manage().window().maximize();
+
+        }
 
         if (prop.getProperty("device").equals("mobile")) {
             driver.manage().window().setSize(new Dimension(400, 3000));
@@ -86,8 +95,9 @@ public class screenShotTest {
         //    driver.navigate().to(URL);
     }
 
-    @Test
-    public static void screenCaptureTest() throws IOException, InterruptedException {
+    public static void main(String[]args) throws IOException, InterruptedException {
+
+        setUp();
 
         // This part is to read data from file
         String ID;
@@ -118,6 +128,15 @@ public class screenShotTest {
 
 
         File newPath = new File(prop.getProperty("ScreenshotLocation"));
+
+        if (!newPath.exists()) {
+            if (newPath.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
+
 
         String templateName;
         Ads Ad1 = new Ads(driver);
@@ -152,7 +171,19 @@ public class screenShotTest {
                 .append("</th>");
 
         System.out.println("Physical Number of Rows:" + (sheet1.getPhysicalNumberOfRows()-1));
-        for (int i = 1; i <  /*(sheet1.getPhysicalNumberOfRows()-1)*/ 10 ; i++) {
+
+        int limit;
+
+        try{
+
+            limit = Integer.parseInt(prop.getProperty("limit"));
+
+        }catch (Exception e){
+
+             limit = (sheet1.getPhysicalNumberOfRows()-1);
+        }
+
+        for (int i = 1; i <  /*(sheet1.getPhysicalNumberOfRows()-1)*/ limit ; i++) {
 
             ID = sheet1.getRow(i).getCell(1).getStringCellValue();
             long startTime = System.currentTimeMillis();
@@ -185,7 +216,13 @@ public class screenShotTest {
 
 
             long endTime = System.currentTimeMillis();
+
             Thread.sleep(5000);
+
+            JavascriptExecutor je = (JavascriptExecutor) driver;
+            je.executeScript("arguments[0].scrollIntoView(true);",Ad1.getFooterLogo());
+
+            Thread.sleep(2000);
 
             // Screenshot of File
             File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -316,6 +353,8 @@ public class screenShotTest {
         //fileOut.close();
         // Open the folder of screenshots
 
+        tearDown();
+
     }
 
 
@@ -347,7 +386,7 @@ public class screenShotTest {
 
     public static Properties loadProp() throws IOException {
 
-        File file = new File("C:\\Users\\~206109371\\Documents\\My Downloads\\java1\\src\\screenConfig.prop");
+        File file = new File("screenConfig.prop");
         FileInputStream fileInput = new FileInputStream(file);
         Properties prop = new Properties();
         prop.load(fileInput);
@@ -370,14 +409,19 @@ public class screenShotTest {
     }
 
 
-    @AfterClass
+
     public static void tearDown() throws IOException {
+
+
 
         BufferedWriter bwr = new BufferedWriter(new FileWriter(new File(prop.getProperty("results"))));
         bwr.write(result.toString());
         bwr.flush();
         bwr.close();
         //Comments
+
+
+
         File Results = new File(prop.getProperty("results"));
         driver.quit();
         Desktop.getDesktop().open(Results);

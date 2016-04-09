@@ -1,9 +1,0 @@
-URL=http://stg-ec02pub.cnbc.com
-browser=phantom
-device=desktop
-testDataLocation=/home/fortegs/IdeaProjects/AdTest/src/NewsID.xlsx
-testDataLocationResults=/home/fortegs/IdeaProjects/java1/src/NewsIDResults.xlsx
-chromeDriverLocation= /home/fortegs/IdeaProjects/AdTest/src/chromedriver
-IEDriverLocation=
-ScreenshotLocation=/home/fortegs/Results/
-phantomDriverLocation=/home/fortegs/IdeaProjects/AdTest/src/phantomjs

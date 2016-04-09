@@ -1,0 +1,13 @@
+URL=http://cnbc.com
+browser=phantom
+device=desktop
+testDataLocation=NewsID.xlsx
+testDataLocationResults=NewsIDResults.xlsx
+chromeDriverLocation= chromedriver
+IEDriverLocation=
+ScreenshotLocation=Results
+phantomDriverLocation=phantomjs
+X=none
+results=results.html
+// Leave limit blank for everything
+limit=5
