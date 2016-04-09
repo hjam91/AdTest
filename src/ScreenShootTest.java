@@ -220,6 +220,9 @@ public class ScreenShootTest {
             Thread.sleep(5000);
 
             JavascriptExecutor je = (JavascriptExecutor) driver;
+
+            je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("arguments[0].scrollIntoView(true);",Ad1.getFooterLogo());
 
             Thread.sleep(2000);
