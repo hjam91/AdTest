@@ -69,7 +69,7 @@ public class ScreenShootTest {
             System.setProperty("webdriver.chrome.driver", prop.getProperty("chromeDriverLocation"));
 
             ChromeOptions options;
-            
+
             options = new ChromeOptions();
             options.addArguments("disable-plugins");
             options.addArguments("disable-extensions");
@@ -201,10 +201,11 @@ public class ScreenShootTest {
 
         }catch (Exception e){
 
+            System.out.println("No limit provided using default limit (Size of excel)");
              limit = (sheet1.getPhysicalNumberOfRows()-1);
         }
 
-        for (int i = 1; i <  /*(sheet1.getPhysicalNumberOfRows()-1)*/ limit ; i++) {
+        for (int i = 1; i <=  /*(sheet1.getPhysicalNumberOfRows()-1)*/ limit ; i++) {
 
             ID = sheet1.getRow(i).getCell(1).getStringCellValue();
             long startTime = System.currentTimeMillis();
