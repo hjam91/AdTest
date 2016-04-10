@@ -6,6 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -17,12 +18,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.screentaker.ViewportPastingStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +67,18 @@ public class ScreenShootTest {
         else if (BROWSER.equals("chrome")) {
 
             System.setProperty("webdriver.chrome.driver", prop.getProperty("chromeDriverLocation"));
-            driver = new ChromeDriver();
+
+            ChromeOptions options;
+            
+            options = new ChromeOptions();
+            options.addArguments("disable-plugins");
+            options.addArguments("disable-extensions");
+            options.addArguments("--disable-internal-flash");
+            options.addArguments("--disable-bundled-ppapi-flash");
+            options.addArguments("--disable-plugins-discovery");
+
+            options.addArguments("--mute-audio");
+            driver = new ChromeDriver(options);
 
         } else if (BROWSER.equals("IE")) {
 
@@ -125,9 +142,13 @@ public class ScreenShootTest {
         }
         XSSFSheet sheet1Results = wbResults.getSheetAt(0);
 */
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy - hh:mm");
+        String time = dateFormat.format(now);
 
+       // location = prop.getProperty("ScreenshotLocation");
 
-        File newPath = new File(prop.getProperty("ScreenshotLocation"));
+        File newPath = new File(prop.getProperty("ScreenshotLocation") +" - " + time);
 
         if (!newPath.exists()) {
             if (newPath.mkdir()) {
@@ -221,28 +242,46 @@ public class ScreenShootTest {
 
             JavascriptExecutor je = (JavascriptExecutor) driver;
 
+
+            //ASnap Scrolls on whole page
+
+         /*   je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("window.scrollBy(0,400)", "");
-          //  je.executeScript("window.scrollBy(0,400)", "");
-            je.executeScript("arguments[0].scrollIntoView(true);",Ad1.getFooterLogo());
+            je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("arguments[0].scrollIntoView(true);",Ad1.getFooterLogo());*/
 
             Thread.sleep(2000);
 
             // Screenshot of File
-            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+            //File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
          //  File scrFile1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
           //  File scrFile2 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
             // Copy folder to new Path
 
+            Screenshot screenshot = new AShot().shootingStrategy(new ViewportPastingStrategy(1000)).takeScreenshot(driver);
+
+
             templateName = sheet1.getRow(i).getCell(0).getStringCellValue();
             templateName = templateName.replace(' ', '-');
+
             if (prop.getProperty("device").equals("desktop")) {
-                FileUtils.copyFile(scrFile, new File(newPath + "/" + templateName + "/" + templateName + ".png"));
+
+                File directory = new File(newPath + "/" + templateName);
+                directory.mkdir();
+
+                ImageIO.write(screenshot.getImage(), "PNG", new File(newPath + "/" + templateName + "/" + templateName + ".png"));
+               // FileUtils.copyFile(scrFile, new File(newPath + "/" + templateName + "/" + templateName + ".png"));
             } else {
-                FileUtils.copyFile(scrFile, new File(newPath + "/" + templateName + "- MOBILE.png"));
+
+                ImageIO.write(screenshot.getImage(), "PNG", new File(newPath + "/" + templateName + "- MOBILE.png"));
+                // FileUtils.copyFile(scrFile, new File(newPath + "/" + templateName + "- MOBILE.png"));
             }
             System.out.println(newPath);
             System.out.println("Screenshot of :" + "/" + templateName + " Done.");
@@ -392,7 +431,7 @@ public class ScreenShootTest {
 
     public static Properties loadProp() throws IOException {
 
-        File file = new File("screenConfig.prop");
+        File file = new File("resources/screenConfig.prop");
         FileInputStream fileInput = new FileInputStream(file);
         Properties prop = new Properties();
         prop.load(fileInput);
