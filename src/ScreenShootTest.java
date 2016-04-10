@@ -55,7 +55,7 @@ public class ScreenShootTest {
             caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
                     prop.getProperty("phantomDriverLocation"));
             driver = new PhantomJSDriver(caps);
-            driver.manage().window().setSize(new Dimension(1920, 1080));
+            driver.manage().window().setSize(new Dimension(1600, 1200));
         }
 
         else if (BROWSER.equals("chrome")) {
@@ -223,6 +223,9 @@ public class ScreenShootTest {
 
             je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("window.scrollBy(0,400)", "");
+            je.executeScript("window.scrollBy(0,400)", "");
+          //  je.executeScript("window.scrollBy(0,400)", "");
             je.executeScript("arguments[0].scrollIntoView(true);",Ad1.getFooterLogo());
 
             Thread.sleep(2000);
